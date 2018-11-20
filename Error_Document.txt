@@ -1,0 +1,19 @@
+* Error while adding file to server by using command git remote add origin "Link of server"
+solution:	other way to add or push file
+  ssh-keygen
+  clip <~/.ssh/id_rsa.pub
+
+*To change the origin 
+solution:	git remote set-url origin "server link which you want to "
+To verify
+  git remote -v
+
+*Error come to git >  peration is already running
+Solution: remove the index file from .git folder
+
+
+*when pushing file into master we will not able to push file because their is new file added in the master. Command is -> git pull origin master 
+solution: so that we have to first pull the file from
+	master then push your  file into master. 
+
+*permission is denied to user requested url return error 403.
