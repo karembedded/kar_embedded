@@ -1,0 +1,7 @@
+list disk
+select disk 1
+clean
+create partition primary size=4096
+assign letter = K
+format fs=ntfs quick
+exit
