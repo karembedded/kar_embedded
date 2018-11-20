@@ -12,13 +12,24 @@ To verify
 Solution: remove the index file from .git folder
 
 
+<<<<<<< HEAD
 *when pushing file into master we will not able to push file because their is new file 
 		added in the master. Command is -> git pull origin master 
+=======
+*when pushing file into master we will not able to push file because their 
+is new file added in the master. Command is -> git pull origin master 
+>>>>>>> 8668d95dc92a5e6a4907e8597a523a8c4d4542b1
 solution: so that we have to first pull the file from
 	master then push your  file into master. 
 
 *permission is denied to user requested url return error 403.
+<<<<<<< HEAD
 
+=======
+go to control pannel->user account->manage your creadentials->windows creadentials-> 
+under generic credentials their are some credentials rerated to github.remove those 
+creadentials. now when you will push file again you have to login to updated creadentials.
+>>>>>>> 8668d95dc92a5e6a4907e8597a523a8c4d4542b1
 
 
 
