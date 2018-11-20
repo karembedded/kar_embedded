@@ -1,0 +1,8 @@
+BT_1 = USED
+BT_2 = USED
+BT_3 = USED
+BT_4 = USED
+BT_5 = USED
+BT_6 = USED
+BT_7 = USED
+BT_8 = USED
