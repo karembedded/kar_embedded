@@ -17,3 +17,9 @@ solution: so that we have to first pull the file from
 	master then push your  file into master. 
 
 *permission is denied to user requested url return error 403.
+
+
+
+
+*After pull the file some window is opening
+Solution:  press i press esc press :wq and after enter
