@@ -9,33 +9,14 @@ for i, df in enumerate(pd.read_html(url1)):
 with open("out1.txt","w+") as csv1:
     f=open('xyz.csv','r+')
     lines=f.readlines()
-    #csv1.writelines(lines[0])
-    csv1.writelines(lines[1])
-    csv1.writelines(lines[6])
-    csv1.writelines(lines[8])
-    csv1.writelines(lines[12])
-    csv1.writelines(lines[16])
-    csv1.writelines(lines[43])
-    csv1.writelines(lines[49])
-    csv1.writelines(lines[57])
-    csv1.writelines(lines[59])
-    csv1.writelines(lines[62])
-    csv1.writelines(lines[64])
+    for i in [1,6,8,12,16,43,49,57,59,62,64]:
+        csv1.writelines(lines[i])
 
 with open("out2.txt","w+") as csv1:
     f=open('xyz1.csv','r+')
     lines=f.readlines()
-    csv1.writelines(lines[36])
-    csv1.writelines(lines[41])
-    csv1.writelines(lines[43])
-    csv1.writelines(lines[53])
-    csv1.writelines(lines[55])
-    csv1.writelines(lines[80])
-    csv1.writelines(lines[77])
-    csv1.writelines(lines[87])
-    csv1.writelines(lines[88])
-    csv1.writelines(lines[93])
-    csv1.writelines(lines[94])
+    for i in [36,41,43,53,55,80,77,87,88,93,94]:
+        csv1.writelines(lines[i])
 f.close()
 csv1.close()
 import csv
