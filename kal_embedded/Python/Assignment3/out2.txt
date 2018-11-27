@@ -1,0 +1,14 @@
+Brand,Motorola
+Model Name,Moto E
+SIM Type,"Dual Sim, GSM + GSM, (Dual Standby) ="
+Secondary Camera,No
+Primary Camera,"Yes, 5 Megapixel"
+Weight,142 g
+Internal,4 GB
+Brand,Motorola
+Model Name,Moto E
+SIM Type,"Dual Sim, GSM + GSM, (Dual Standby) ="
+Secondary Camera,No
+Primary Camera,"Yes, 5 Megapixel"
+Weight,142 g
+Internal,4 GB

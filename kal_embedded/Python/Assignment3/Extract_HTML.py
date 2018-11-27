@@ -1,5 +1,13 @@
 import sys
 import csv
+import pandas as pd
+url = 'C:\Assignment 3\Buy Huawei Ascend P1 Online at Best Prices In India  Flipkart_com.mht'
+url1='C:\Assignment 3\Big_india.mht'
+for i, df in enumerate(pd.read_html(url)):
+    df.to_csv('xyz.csv',index = False, header = False, mode='a')
+for i, df in enumerate(pd.read_html(url1)):
+    df.to_csv('xyz1.csv',index = False, header = False, mode='a')
+
 with open("out1.txt","w") as csv1:
     f=open('xyz.csv','r')
     list1=("Brand","Model Name","SIM Type","Secondary Camera","Primary Camera","Weight","Internal")
