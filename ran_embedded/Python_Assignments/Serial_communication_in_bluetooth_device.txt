@@ -16,7 +16,7 @@ def write_slogan():
    string = ComPort.readline()
    data1=string.decode('utf-8')
    print(data1)
-   data = ComPort.write(b'AT+ab config var06 = 115200\x0A')
+   data = ComPort.write(b'AT+ab config var06 = 115200\x0A')p
    string = ComPort.readline()
    data1=string.decode('utf-8')
    print(data1)
