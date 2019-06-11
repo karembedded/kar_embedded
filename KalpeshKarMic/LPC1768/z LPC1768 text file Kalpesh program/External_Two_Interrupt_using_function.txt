@@ -1,0 +1,117 @@
+#include "lpc17xx.h"
+//#include "type.h"
+#include "extint.h"
+enum ePinsel{GPIO=0,ALT_FUNC1,ALT_FUNC2,ALT_FUNC3};
+enum eState{LOW=0,HIGH};
+enum eDirection{INPUT=0,OUTPUT};
+void PinSelFunc(uint8_t ,uint8_t ,enum ePinsel);
+void PinWrite(uint8_t,uint8_t,enum eState);
+void PinDir(uint8_t,uint8_t ,enum eDirection);
+volatile uint32_t eint1_counter;
+void delay(void)
+{
+                uint32_t i,j;
+                for(i=0;i<800;i++)
+                {
+                                for(j=0;j<1000;j++);
+                                
+                }              
+}
+
+void EINT2_IRQHandler (void) 
+{
+                                LPC_SC->EXTINT |= 0X03;                            /* clear interrupt */
+                                PinWrite(1,29,1);              /* turn off P2.0~3 */      
+    delay();
+                                PinWrite(1,29,0);              /* turn off P2.4~7 */
+                                delay();
+}
+void EINT1_IRQHandler (void) 
+{
+  LPC_SC->EXTINT |= 0x02;                           /* clear interrupt */
+                                
+
+                                PinWrite(1,24,1);              /* turn off P2.0~3 */      
+    delay();
+                                PinWrite(1,24,0);              /* turn off P2.4~7 */
+                                delay();
+}
+
+
+uint32_t EINT1Init( void )
+{
+                PinSelFunc(2,11,1);
+                PinDir(1,24,1);
+                PinWrite(1,24,0);
+  LPC_SC->EXTMODE = 0x01;                       /* INT1 edge trigger */
+  LPC_SC->EXTPOLAR = 0x01;                                                      /* INT1 is falling edge by default */
+                NVIC->ISER[0] |=1<<19;                                               /*  ENABLE INTERRUPT */
+}
+
+uint32_t EINT2Init( void )
+{
+                PinSelFunc(2,12,1);
+                PinDir(1,29,1);
+                PinWrite(1,29,0);
+  LPC_SC->EXTMODE = 0x01;                       /* INT1 edge trigger */
+  LPC_SC->EXTPOLAR = 0x01;                                                      /* INT1 is falling edge by default */
+                NVIC->ISER[0] |=1<<20;
+}
+
+int main (void)
+{
+        
+  EINT1Init();
+                EINT2Init();
+
+   while( 1 );
+}
+
+void PinSelFunc(uint8_t port_number,uint8_t pin_number,enum ePinsel mode)
+{
+                uint32_t *port_addr;
+
+                if(pin_number <= 15)
+                {
+                                                port_addr= (uint32_t*)(LPC_PINCON_BASE + (8*port_number));
+                                *(port_addr)=((*port_addr)& ~(3 << pin_number*2));
+                                *(port_addr)=((*port_addr)| (mode << pin_number*2));
+                }
+                else
+                {
+                                                port_addr= (uint32_t*)(LPC_PINCON_BASE +0x04+ (8*port_number));
+                                *(port_addr)=((*port_addr)& ~(3 << (pin_number-16)*2));
+                                *(port_addr)=((*port_addr)| (mode << (pin_number-16)*2));
+                }
+}
+
+
+void PinWrite(uint8_t port_number,uint8_t pin_number,enum eState pin_state)
+{
+                uint32_t *port_addr;
+                if(pin_state !=0)
+                {
+                                port_addr=(uint32_t*)(LPC_GPIO_BASE + 0x14 + (0x20 * port_number));
+                                *port_addr=(*port_addr) | 0x01<<pin_number;
+                }
+                else
+                {
+                                port_addr=(uint32_t*)(LPC_GPIO_BASE + 0x14 + (0x20 * port_number));
+                                *port_addr=(*port_addr) & ~(0x01<<pin_number);
+                }
+}
+
+
+void PinDir(uint8_t port_number,uint8_t pin_number,enum eDirection pin_direction)
+{
+                uint32_t* port_addr;
+                port_addr=(uint32_t*)(LPC_GPIO_BASE + (0x20 *port_number ));
+                if(pin_direction)
+                {
+                                *port_addr=((*port_addr) | 0x01 << pin_number );
+                }
+                else
+                {
+                                *port_addr=((*port_addr) | ~(0x01 << pin_number ));
+                }
+}

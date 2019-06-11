@@ -1,0 +1,1 @@
+EXINT3 connected to p2.6

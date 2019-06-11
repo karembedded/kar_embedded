@@ -1,0 +1,51 @@
+#include "lpc17xx.h"
+#include "type.h"
+void delay(void);
+int main (void)
+{                                              
+  uint32_t i, j;
+
+  /* SystemClockUpdate() updates the SystemFrequency variable */
+  SystemClockUpdate();
+
+  //LPC_GPIO2->FIODIR = 0x000000FF;                   /* P2.xx defined as Outputs */
+  //LPC_GPIO2->FIOCLR = 0x000000FF;                   /* turn off all the LEDs */
+                //LPC_PINCON->PINSEL3 = LPC_PINCON->PINSEL3 & ~(3<<26);
+                LPC_GPIO1->FIODIR = LPC_GPIO1->FIODIR | 0x07E00000;
+                //LPC_GPIO1->FIODIR =LPC_GPIO1->FIODIR | 1<<29;
+                i=21;
+                while(1)
+                {
+                                
+                                LPC_GPIO1->FIOSET =LPC_GPIO1->FIOSET  | 1<<i;
+                                delay();
+                                LPC_GPIO1->FIOCLR =LPC_GPIO1->FIOCLR | 1<< i;
+                                delay();
+                                
+                                if(25==i)
+                                {
+                                                for(i=26;i>=21;i=i-2)
+                                                {
+                                                                
+                                                                LPC_GPIO1->FIOSET =LPC_GPIO1->FIOSET  | 1<<i;
+                                                                delay();
+                                                                LPC_GPIO1->FIOCLR =LPC_GPIO1->FIOCLR | 1<< i;
+                                                                delay();
+                                                }
+                                                if(i==20)
+                                                {
+                                                                i=19;
+                                                }
+                                }
+                                i=i+2;
+}
+}
+void delay(void)
+{
+                                int i,j;
+                                
+                                for(i = 0; i < 8000; i++)
+                                {
+                                                for(j = 0; j <1000 ; j++);
+                                }
+}

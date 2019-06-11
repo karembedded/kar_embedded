@@ -1,0 +1,74 @@
+//#include "type.h"
+#include "lpc17xx.h"
+#include "system_LPC17xx.h"
+#include "extint.h"
+
+void EINT1_IRQHandler (void);
+uint32_t EINTInit( void );
+static uint32_t eint1_counter; 
+
+int main (void)
+{
+
+		SystemInit();
+
+		EINTInit();     /* initialize GPIO pins as external interrupts */ 
+
+		//LPC_SC->EXTINT |= EINT2;
+	  //LPC_SC->EXTINT |= EINT1;	
+		while( 1 );
+}
+uint32_t EINTInit( void )
+{
+  LPC_PINCON->PINSEL4 |= 01<<22;	/* set P2.11 as EINT1 and*/
+	LPC_PINCON->PINSEL4 |= 01<<24;	/* set P2.12 as EINT2 and*/						
+	
+  LPC_GPIO1->FIODIR |= 1<<29;	/* port 1, bit 29 only */
+	LPC_GPIO1->FIODIR |= 1<<24;	/* port 1, bit 24 only */
+  
+	LPC_GPIO1->FIOCLR |= 1<<29;	/* turn off LED */
+	LPC_GPIO1->FIOCLR |= 1<<24;	/* turn off LED */
+
+  LPC_SC->EXTMODE |= EINT1_EDGE;		/* INT1 edge trigger */
+ // LPC_SC->EXTPOLAR = 1;				/* INT1 is falling edge by default */
+	LPC_SC->EXTMODE |= EINT2_EDGE;		/* INT2 edge trigger */
+//  LPC_SC->EXTPOLAR = 1;				/* INT1 is falling edge by default */
+
+	NVIC_EnableIRQ(EINT2_IRQn);
+  NVIC_EnableIRQ(EINT1_IRQn);
+	NVIC_SetPriority(EINT1, 3);
+
+}
+
+void EINT1_IRQHandler (void) 
+{
+		  		
+  LPC_SC->EXTINT |= EINT1;		/* clear interrupt */
+	eint1_counter++;
+  if ( eint1_counter & 0x01 )	/* alternate the LED display */
+  {
+			//LPC_GPIO1->FIOSET |= 1<<29;	/* turn ON p1.29 */	
+			LPC_GPIO1->FIOSET |= 1<<24;	/* turn ON p1.24 */		
+  }
+  else
+  {
+			//LPC_GPIO1->FIOCLR |= 1<<29;	/* turn OFF p1.29 */
+			LPC_GPIO1->FIOCLR |= 1<<24;	/* turn OFF p1.24 */
+  }
+}
+void EINT2_IRQHandler (void) 
+{		
+  LPC_SC->EXTINT |= EINT2;		/* clear interrupt */
+	eint1_counter++;  
+  if ( eint1_counter & 0x01 )	/* alternate the LED display */
+  {
+			LPC_GPIO1->FIOSET |= 1<<29;	/* turn ON p1.29 */
+		//	LPC_GPIO1->FIOSET |= 1<<24;	/* turn ON p1.24 */				
+  }
+  else
+  {
+			LPC_GPIO1->FIOCLR |= 1<<29;	/* turn OFF p1.29 */		
+		//	LPC_GPIO1->FIOCLR |= 1<<24;	/* turn OFF p1.24 */
+  }
+}
+

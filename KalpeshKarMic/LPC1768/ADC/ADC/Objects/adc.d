@@ -1,0 +1,9 @@
+.\objects\adc.o: adc.c
+.\objects\adc.o: C:\Keil_v5\ARM\INC\NXP\LPC17xx\system_lpc17xx.h
+.\objects\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\adc.o: C:\Keil_v5\ARM\INC\NXP\LPC17xx\lpc17xx.h
+.\objects\adc.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h
+.\objects\adc.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\adc.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\adc.o: UserDefineFunction.h
+.\objects\adc.o: adc.h

@@ -1,0 +1,67 @@
+/****************************************************************************
+ *   $Id:: IOtest.c 6097 2011-01-07 04:31:25Z nxp12832                      $
+ *   Project: NXP LPC17xx GPIO example
+ *
+ *   Description:
+ *     This file contains GPIO test modules, main entry, to test GPIO APIs.
+ *
+ ****************************************************************************
+ * Software that is described herein is for illustrative purposes only
+ * which provides customers with programming information regarding the
+ * products. This software is supplied "AS IS" without any warranties.
+ * NXP Semiconductors assumes no responsibility or liability for the
+ * use of the software, conveys no license or title under any patent,
+ * copyright, or mask work right to the product. NXP Semiconductors
+ * reserves the right to make changes in the software without
+ * notification. NXP Semiconductors also make no representation or
+ * warranty that such application will be suitable for the specified
+ * use without further testing or modification.
+****************************************************************************/
+
+#include "lpc17xx.h"
+#include "type.h"
+void delay(void);
+int main (void)
+{                                              
+  uint32_t i, j;
+
+  SystemClockUpdate();
+
+  //LPC_GPIO2->FIODIR = 0x000000FF;                   /* P2.xx defined as Outputs */
+  //LPC_GPIO2->FIOCLR = 0x000000FF;                   /* turn off all the LEDs */
+							
+								LPC_PINCON->PINSEL3 = LPC_PINCON->PINSEL3 & ~(3<<16);    //Selecting the GPIO1. select the 24 pin for switch.
+                LPC_PINCON->PINSEL3 = LPC_PINCON->PINSEL3 & ~(3<<26);		// selecting the GPIO1.select the pin 29 for LED.
+	
+	
+                LPC_GPIO1->FIODIR = LPC_GPIO1->FIODIR | (1<<29);		//giving the direction 1 means is output for led pin
+								//LPC_GPIO1->FIODIR = LPC_GPIO1->FIODIR & ~(1<<24);		//giving the direction 0 means is input for switch pin
+                while(1)
+		{
+								if(LPC_GPIO1->FIOPIN >> 24 & 1 )					//checking the pin 24 is high 1
+								{
+										LPC_GPIO1->FIOCLR3 =LPC_GPIO1->FIOCLR3 | (1<<5); //LED is ON
+								}
+								else
+								{
+									LPC_GPIO1->FIOSET3 =LPC_GPIO1->FIOSET3  | (1<<5);
+									//LED is OFF
+								}
+							}
+								/*
+								whil
+                     LPC_GPIO1->FIOSET3 =LPC_GPIO1->FIOSET3  | 1<<5;			//FIOSET3
+                     delay();
+                     LPC_GPIO1->FIOCLR3 =LPC_GPIO1->FIOCLR3 | 1<< 5;
+                     delay();
+                }*/
+}
+void delay(void)
+{
+      int i,j;
+     for(i = 0; i < 800; i++)
+		 {
+					for(j = 0; j <1000 ; j++);                                               
+     }                                                           
+                                
+}
