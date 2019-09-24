@@ -1,0 +1,110 @@
+	uint32_t FLASH_FKEY1 =0x45670123;
+	uint32_t FLASH_FKEY2 =0xCDEF89AB;
+	uint32_t flash_addr = 0x08003C00;
+	uint8_t data[64]="12345";
+	uint8_t txdata[]="hello";
+	uint8_t from_nvm[10];
+	uint16_t number=64;
+	uint8_t i;
+	
+	void nvm_RW(void)
+	{
+/*****************FOR UNCLOCKING FLASH MEMORY*/////////
+		while ((FLASH->SR & FLASH_SR_BSY) != 0) /* (1) */
+			{
+			}
+	if ((FLASH->CR & FLASH_CR_LOCK) != 0) /* (2) */
+	{
+	FLASH->KEYR = FLASH_FKEY1; /* (3) */
+	FLASH->KEYR = FLASH_FKEY2;
+	}
+	
+	FLASH->CR |= FLASH_CR_PER; /* (1) */
+FLASH->AR = flash_addr; /* (2) */
+FLASH->CR |= FLASH_CR_STRT; /* (3) */
+while ((FLASH->SR & FLASH_SR_BSY) != 0) /* (4) */
+{
+/* For robust implementation, add here time-out management */
+}
+if ((FLASH->SR & FLASH_SR_EOP) != 0) /* (5) */
+{
+FLASH->SR = FLASH_SR_EOP; /* (6)*/
+}
+else
+{
+/* Manage the error cases */
+}
+FLASH->CR &= ~FLASH_CR_PER; /* (7) */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//////////////////////////////////////////////////////
+
+	FLASH->CR |= FLASH_CR_PG; /* (1) */
+	
+		*(__IO uint16_t*)(flash_addr) = *data; /* (2) */
+		*(__IO uint16_t*)(flash_addr+2) = *(data+1); /* (2) */
+		*(__IO uint16_t*)(flash_addr+4) = *(data+2); /* (2) */
+		*(__IO uint16_t*)(flash_addr+6) = *(data+3); /* (2) */
+		
+while ((FLASH->SR & FLASH_SR_BSY) != 0) /* (3) */
+{
+}	
+if ((FLASH->SR & FLASH_SR_EOP) != 0) /* (4) */
+{
+FLASH->SR = FLASH_SR_EOP; /* (5) */
+}
+else
+{
+
+}
+FLASH->CR &= ~FLASH_CR_PG; /* (6) */
+}
+
+
+
+
+
+
+
+
+int main(void)
+{
+  HAL_Init();
+  SystemClock_Config();
+  //MX_GPIO_Init();
+  //MX_RTC_Init();
+  //MX_TIM3_Init();
+	MX_WWDG_Init();
+	
+  MX_USART1_UART_Init();
+	__HAL_UART_ENABLE_IT(&huart1,UART_IT_TC);
+	__HAL_UART_ENABLE_IT(&huart1,UART_IT_RXNE);
+	
+	nvm_RW();
+	HAL_UART_Transmit_IT(&huart1,(uint8_t*)txdata,sizeof(txdata));
+  
+	while (1)
+  {
+		for(i=0;i<20;)
+		{
+		*(from_nvm+i)=*(uint16_t*)(flash_addr+i);
+			i=i+2;
+		}
+		HAL_Delay(2000);
+		HAL_UART_Transmit_IT(&huart1,(uint8_t*)from_nvm,sizeof(from_nvm));
+  } 
+}
